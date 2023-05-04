@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+Route::get('/login', function (Request $request) {
+    if (!empty($request->error) && $request->error == "unauthorized")
+    {
+        return response()->json(['error' => 'Unauthorised'], 401);
+    } else {
+        return response()->json(['success' => 'Login Page'], 200);
+    }
+})->name('login');
