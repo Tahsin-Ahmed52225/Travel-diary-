@@ -17,7 +17,6 @@ class PassportAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
-        if($this->validate()->fail)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

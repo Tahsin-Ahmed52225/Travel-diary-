@@ -2,8 +2,9 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Http\Request;
 
 interface RegisterRepositoryInterface
 {
-    public function register();
+    public function register(Request $request);
 }
