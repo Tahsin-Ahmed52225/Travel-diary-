@@ -3,6 +3,7 @@
 ### Task Todo
 - [x] Intialize project
 - [x] Added Passport Auth API 
+- [x] Add Logout Route
 - [ ] Add Forget Password Route
 - [x] Add Laravel Request validation ( Create Request file for register and login)
 - [x] Add Sapite Role Permisson Package Setup

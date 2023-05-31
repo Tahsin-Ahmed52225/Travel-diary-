@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use App\Enums\AuthErrorMessage;
 
 class Authenticate extends Middleware
 {
@@ -12,6 +13,6 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('login', ['error' => 'unauthorized']);
+        return $request->expectsJson() ? null : abort(response()->json(['msg' => AuthErrorMessage::UnAuthorized ], 403));
     }
 }
