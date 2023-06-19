@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\SystemRoleRepositoryInterface;
 use Illuminate\Http\Request;
 
 class SystemRoleController extends Controller
 {
+    private $systemRoleRepository;
+
+    public function __construct(SystemRoleRepositoryInterface $systemRoleRepository)
+    {
+        $this->systemRoleRepository = $systemRoleRepository;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+            $roles = $this->systemRoleRepository->index($request);
+            return response()->json(['roles' => $roles], 200);
     }
 
     /**
@@ -19,7 +27,7 @@ class SystemRoleController extends Controller
      */
     public function create()
     {
-        //
+        $roles = $this->systemRoleRepository->create();
     }
 
     /**
@@ -27,7 +35,7 @@ class SystemRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $roles = $this->systemRoleRepository->store();
     }
 
     /**
@@ -35,7 +43,7 @@ class SystemRoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $roles = $this->systemRoleRepository->show();
     }
 
     /**
@@ -43,7 +51,7 @@ class SystemRoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $roles = $this->systemRoleRepository->edit();
     }
 
     /**
@@ -51,7 +59,7 @@ class SystemRoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $roles = $this->systemRoleRepository->update();
     }
 
     /**
@@ -59,6 +67,6 @@ class SystemRoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $roles = $this->systemRoleRepository->destroy();
     }
 }
