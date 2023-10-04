@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Enums\AuthErrorMessage;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\LoginRepositoryInterface;
 
@@ -11,36 +14,38 @@ class LoginRepository implements LoginRepositoryInterface
 {
     /**
      * login API repository
-     * @param Request $request
-     * @return JsonResponse
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $data = [
             'email' => $request->email,
             'password' => $request->password
         ];
-
         if (auth()->attempt($data)) {
-            $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
             return response()->json([
-                        'msg' => AuthErrorMessage::LoginSuccess,
-                        'Access-Token' => $token,
-                    ], 200);
+                'message' => AuthErrorMessage::LoginSuccess,
+                'data' => [
+                    'token' => auth()->user()->createToken('LaravelAuthApp')->accessToken,
+                ],
+            ], Response::HTTP_OK);
         } else {
-            return response()->json(['msg' => AuthErrorMessage::LoginFailure ], 401);
+            return response()->json([
+                'message' => AuthErrorMessage::LoginFailure ,
+                'data' => []
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
     /**
      * logout API repository
-     * @param Request $request
-     * @return JsonResponse
      */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         $user = Auth::user()->token();
         $user->revoke();
-        $status = response()->json(['msg' => AuthErrorMessage::LogoutSuccess], 200);
+        $status = response()->json([
+            'message' => AuthErrorMessage::LogoutSuccess ,
+            'data' => [] ,
+        ], Response::HTTP_OK);
 
         return $status;
     }

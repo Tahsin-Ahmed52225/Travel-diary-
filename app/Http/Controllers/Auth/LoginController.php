@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Enums\AuthErrorMessage;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Interfaces\LoginRepositoryInterface;
-use Exception;
 
 class LoginController extends Controller
 {
@@ -19,32 +18,20 @@ class LoginController extends Controller
     }
     /**
      * Login API controller
-     * @param Request $request
-     * @return JsonResponse
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        try {
-            $status = $this->loginRepository->login($request);
-        } catch (Exception $e) {
-            $status = response()->json(['msg' => AuthErrorMessage::LoginFailure ], 500);
-        } finally {
-            return $status;
-        }
+            $response = $this->loginRepository->login($request);
+
+            return $response;
     }
      /**
      * Logout API controller
-     * @param Request $request
-     * @return JsonResponse
      */
     public function logout(Request $request): JsonResponse
     {
-        try {
             $status = $this->loginRepository->logout($request);
-        } catch (Exception $e) {
-            $status = response()->json(['msg' => AuthErrorMessage::LoginFailure ], 500);
-        } finally {
+
             return $status;
-        }
     }
 }

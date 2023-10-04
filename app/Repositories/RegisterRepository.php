@@ -2,37 +2,26 @@
 
 namespace App\Repositories;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
+use App\Enums\AuthErrorMessage;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\RegistrationRequest;
 use App\Interfaces\RegisterRepositoryInterface;
 
 class RegisterRepository implements RegisterRepositoryInterface {
     /**
      * Register a new user
-     *
-     * @param Request
-     * @return JsonResponse
      */
-    public function register(Request $request)
+    public function register(RegistrationRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        $user = User::store($request);
 
-        $token = $user->createToken('LaravelAuthApp')->accessToken;
-
-        return response()->json(['token' => $token], 200);
+        return response()->json(['message' => AuthErrorMessage::RegistrationSuccess ,
+                                 'data' => [
+                                    'token' => $user->createToken('LaravelAuthApp')->accessToken ,
+                                    ]
+                                 ], Response::HTTP_CREATED);
     }
 
 }
