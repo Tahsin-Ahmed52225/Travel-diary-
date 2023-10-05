@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleRequest;
 use App\Interfaces\SystemRoleRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -16,26 +17,19 @@ class SystemRoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-            $roles = $this->systemRoleRepository->index($request);
-            return response()->json(['roles' => $roles], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $roles = $this->systemRoleRepository->create();
+        $response = $this->systemRoleRepository->index();
+        return $response;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        $roles = $this->systemRoleRepository->store();
+        $response = $this->systemRoleRepository->store($request);
+        return $response;
     }
 
     /**
@@ -65,8 +59,9 @@ class SystemRoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(RoleRequest $request)
     {
-        $roles = $this->systemRoleRepository->destroy();
+        $response = $this->systemRoleRepository->destroy();
+        return $response;
     }
 }

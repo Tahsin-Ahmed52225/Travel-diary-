@@ -2,18 +2,32 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\SystemRoleRepositoryInterface;
+use App\Models\Role;
+use App\Enums\SystemMessage;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\RoleRequest;
+use App\Interfaces\SystemRoleRepositoryInterface;
 
 class SystemRoleRepository implements SystemRoleRepositoryInterface
 {
-    public function index(Request $request)
+    public function index(): JsonResponse
     {
-        dd("All the roles are available");
+        return response()->json([
+            'message' => SystemMessage::SUCCESS ,
+            'data' => Role::getAll() ,
+        ], Response::HTTP_OK);
     }
-    public function store()
+    public function store(RoleRequest $request)
     {
-        dd("created");
+        $role = Role::store($request);
+
+        return response()->json(['message' => SystemMessage::SUCCESS ,
+        'data' => [
+           'role' => $role ,
+           ]
+        ], Response::HTTP_CREATED);
     }
     public function update()
     {

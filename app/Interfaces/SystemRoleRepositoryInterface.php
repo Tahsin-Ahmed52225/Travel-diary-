@@ -2,12 +2,12 @@
 
 namespace App\Interfaces;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
 
 interface SystemRoleRepositoryInterface
 {
-    public function index(Request $request);
-    public function store();
+    public function index();
+    public function store(RoleRequest $request);
     public function update();
     public function edit();
     public function show();
